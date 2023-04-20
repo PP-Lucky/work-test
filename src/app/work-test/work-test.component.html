@@ -1,0 +1,432 @@
+<div class="container-fluid"  *ngIf="page == 1">
+  <div class="row">
+    <div class="col-10 offset-1">
+      <div class="row border-bottom">
+        <div class="pb-2 mt-4 mb-2 text-left">
+          <h3><b>1. Tax Filing Detail</b></h3>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col">
+          <label class="label-value">Type of filing <span style="color:red">*</span> </label>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-2">
+          <input
+            type="radio"
+            id="typeOff1" name="typeOffilling"  
+            [(ngModel)]="filingType"
+            [value]="'0'"
+            style="cursor: pointer"
+          />
+          Ordinary Filling
+        </div>
+        <div class="col-2">
+          <input
+            type="radio"
+            id="typeOff2" name="typeOffilling" 
+            [(ngModel)]="filingType"
+            [value]="'1'"
+            style="cursor: pointer"
+          />
+          Additional Filling
+        </div>
+      </div>
+     
+      <div class="row pb-2">
+        <div class="col-6">
+          <div class="row pb-2" *ngIf="filingType == '0'">
+            <label for="floatingInput">VAT Month <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2" *ngIf="filingType == '1'">
+            <label for="floatingInput">Tax Month <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2">
+            <div class="col-4">
+              <select class="form-control" placeholder="Month" [(ngModel)]="month">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option> 
+              </select>
+            </div>
+            <div class="col-4">
+              <select class="form-control" placeholder="year" [(ngModel)]="year">
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option> 
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col" *ngIf="filingType == '1'" >
+          <div class="row pb-2">
+            <label for="floatingInput">Type <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2">
+            <div class="col-4">
+              <select class="form-control" placeholder="On-Time">
+                <option value="On-Time">On-Time</option>
+              </select>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-10 offset-1">
+      <div class="row border-bottom">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>2. Tax Computation</b></h3>
+        </div>
+        <div class="col mt-4 mb-2 text-right">
+          <h3>View Exchange Rate</h3>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col">
+          <label class="label-value"
+            >Provide total value taxable electronic service <span style="color:red">*</span>
+          </label>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">1. Total value of taxable electronic service exclusive of
+            VAT</label>
+        </div>
+        <div class="col-2">
+          <input  type="text"  class="form-control" placeholder="THB" [(ngModel)]="saleAmount"  
+          style="text-align: end;"
+          (change)="onChangeSaleAmount($event)"
+          (keypress)="numberOnly($event)"
+          />
+        </div>
+      </div>
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">2. Total VAT to be remitted (7% of 1.)</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder="THB" style="text-align: end;" 
+          [(ngModel)]="taxAmountView"  
+          />
+        </div>
+      </div> 
+    </div>
+
+    <div class="col-10 offset-1" *ngIf="filingType == '1'">
+      <div class="row">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>In Case of late filling and payment, or additional filling</b></h3>
+        </div> 
+      </div> 
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">3. Surcharge</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""  [(ngModel)]="surchargeView"  readonly style="text-align: end;" />
+        </div>
+      </div>
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">4. Penalty</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""   [(ngModel)]="penaltyView" readonly style="text-align: end;" />
+        </div>
+      </div>
+ 
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">5. Total amount of VAT, surcharge, and penalty to be remitted (2.+3.+4.)</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""   [(ngModel)]="totalAmountView"  readonly style="text-align: end;" />
+        </div>
+      </div> 
+    </div>
+
+    <div class="col-10 offset-1"> 
+      <div class="row pb-2">
+        <div class="col"> 
+          <button class="btn btn-primary"  (click)="onClickNextPage2()">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="page == 2">
+  <div class="row">
+    <div class="col-10 offset-1">
+      <div class="row border-bottom">
+        <div class="pb-2 mt-4 mb-2 text-left">
+          <h3><b>1. Tax Filing Detail</b></h3>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col">
+          <label class="label-value">Type of filing <span style="color:red">*</span> </label>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-2">
+          <input
+            disabled
+            type="radio"
+            id="typeOff1" name="typeOffilling"  
+            [(ngModel)]="filingType"
+            [value]="'0'"
+            style="cursor: pointer"
+          />
+          Additional Filling
+        </div>
+        <div class="col-2">
+          <input
+            disabled
+            type="radio"
+            id="typeOff2" name="typeOffilling" 
+            [(ngModel)]="filingType"
+            [value]="'1'"
+            style="cursor: pointer"
+          />
+          Additional Filling
+        </div>
+      </div>
+     
+      <div class="row pb-2">
+        <div class="col-6">
+          <div class="row pb-2" *ngIf="filingType == '0'">
+            <label for="floatingInput">VAT Month <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2" *ngIf="filingType == '1'">
+            <label for="floatingInput">Tax Month <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2">
+            <div class="col-4">
+              <select class="form-control" disabled placeholder="Month" [(ngModel)]="month">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option> 
+              </select>
+            </div>
+            <div class="col-4">
+              <select class="form-control" disabled placeholder="year" [(ngModel)]="year">
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option> 
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col" *ngIf="filingType == '1'" >
+          <div class="row pb-2">
+            <label for="floatingInput">Type <span style="color:red">*</span></label>
+          </div>
+          <div class="row pb-2">
+            <div class="col-4">
+              <select class="form-control" disabled placeholder="On-Time">
+                <option value="On-Time">On-Time</option>
+              </select>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-10 offset-1">
+      <div class="row border-bottom">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>2. Tax Computation</b></h3>
+        </div>
+        <div class="col mt-4 mb-2 text-right">
+          <h3>View Exchange Rate</h3>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col">
+          <label class="label-value"
+            >Provide total value taxable electronic service <span style="color:red">*</span>
+          </label>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">1. Total value of taxable electronic service exclusive of
+            VAT</label>
+        </div>
+        <div class="col-2">
+          <input  type="text"  class="form-control" placeholder="THB" [(ngModel)]="saleAmountView"  
+          style="text-align: end;" 
+          readonly
+          />
+        </div>
+      </div>
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">2. Total VAT to be remitted (7% of 1.)</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder="THB" style="text-align: end;" 
+          [(ngModel)]="taxAmountView"  
+          readonly
+          />
+        </div>
+      </div> 
+    </div>
+
+    <div class="col-10 offset-1" *ngIf="filingType == '1'">
+      <div class="row">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>In Case of late filling and payment, or additional filling</b></h3>
+        </div> 
+      </div> 
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">3. Surcharge</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""  [(ngModel)]="surchargeView"  readonly style="text-align: end;" />
+        </div>
+      </div>
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">4. Penalty</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""   [(ngModel)]="penaltyView" readonly style="text-align: end;" />
+        </div>
+      </div>
+ 
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">5. Total amount of VAT, surcharge, and penalty to be remitted (2.+3.+4.)</label>
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control" placeholder=""   [(ngModel)]="totalAmountView"  readonly style="text-align: end;" />
+        </div>
+      </div> 
+    </div>
+
+    <div class="col-10 offset-1"> 
+      <div class="row pb-2">
+        <div class="col">
+          <a class="btn btn-outline-dark" (click)="onClickBackPage1()">Back</a>&nbsp;
+          <button class="btn btn-primary"  (click)="onClickNextPage3()">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="page == 3">
+  <div class="row">
+    <div class="col-10 offset-1">
+      <div class="row border-bottom">
+        <div class="pb-2 mt-4 mb-2 text-left">
+          <h3><b>Tax Filing Detail</b></h3>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col">
+          <label class="label-value">Type of filing {{filingType == '0' ? 'Ordinary Filling' : 'Additional Filling'}}  </label>
+        </div>
+      </div> 
+      <div class="row pb-2">
+        <div class="col-6">
+          <div class="row pb-2" *ngIf="filingType == '0'">
+            <label for="floatingInput">VAT Month {{month}} {{year}}</label>
+          </div>
+          <div class="row pb-2" *ngIf="filingType == '1'">
+            <label for="floatingInput">Tax Month {{month}} {{year}}</label>
+          </div> 
+        </div> 
+      </div>
+    </div>
+
+    <div class="col-10 offset-1">
+      <div class="row pb-2 border-bottom">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>Tax Computation</b></h3>
+        </div> 
+      </div> 
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">Total value of taxable electronic service exclusive of
+            VAT</label>
+        </div>
+        <div class="col-2">
+         {{saleAmountView}}
+        </div>
+      </div>
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">Total VAT to be remitted (7% of Total value of table electronic service exclusive of VAT)</label>
+        </div>
+        <div class="col-2">
+          {{taxAmountView}}
+        </div>
+      </div> 
+
+      <div class="row pb-2">
+        <div class="col-8">
+          <label for="floatingInput">Total Amount Payable</label>
+        </div>
+        <div class="col-2">
+          {{totalAmountView}}
+        </div>
+      </div> 
+    </div>
+
+   <div class="col-10 offset-1" >
+      <div class="row  pb-2 border-bottom">
+        <div class="col-8 mt-4 mb-2 text-left">
+          <h3><b>Declaration</b></h3>
+        </div> 
+      </div> 
+      <div class="row pb-2">
+        <div class="col-8">
+          I hereby certify that information given above are true and correct and agree to be bound by such information 
+        </div> 
+      </div> 
+    </div> 
+      
+    <div class="col-10 offset-1"> 
+      <div class="row pb-2">
+        <div class="col text-center">
+          <button class="btn btn-primary"  (click)="onSubmit()">Confirm & Submit</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
